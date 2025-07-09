@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/orders")
 @RequiredArgsConstructor
@@ -21,6 +23,13 @@ public class OrderController {
         Long userId = getSessionUserId(session);
         orderService.createOrder(userId, dto);
     }
+
+    @GetMapping
+    public List<OrderResponseDto> getOrders(HttpSession session) {
+        Long userId = getSessionUserId(session);
+        return orderService.getOrdersByUser(userId);
+    }
+
 
     // 세션에서 로그인 유저 ID 가져오기 (로그인 필수)
     private Long getSessionUserId(HttpSession session) {

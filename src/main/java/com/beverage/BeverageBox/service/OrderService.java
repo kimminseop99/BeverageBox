@@ -1,6 +1,7 @@
 package com.beverage.BeverageBox.service;
 
 import com.beverage.BeverageBox.dto.request.OrderRequestDto;
+import com.beverage.BeverageBox.dto.response.OrderResponseDto;
 import com.beverage.BeverageBox.entity.*;
 import com.beverage.BeverageBox.repository.*;
 
@@ -77,4 +78,31 @@ public class OrderService {
 
         cartItemRepository.deleteAll(cartItems); // 장바구니 초기화
     }
+
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> getOrdersByUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보가 없습니다."));
+
+        List<Order> orders = orderRepository.findAllByUserOrderByOrderDateDesc(user);
+
+        return orders.stream().map(order -> {
+            List<OrderResponseDto.OrderItemDto> itemDtos = order.getOrderItems().stream()
+                    .map(item -> new OrderResponseDto.OrderItemDto(
+                            item.getBeverage().getId(),
+                            item.getBeverage().getName(),
+                            item.getQuantity(),
+                            item.getPrice()))
+                    .toList();
+
+            return new OrderResponseDto(
+                    order.getId(),
+                    order.getOrderDate(),
+                    order.getTotalPrice(),
+                    order.getStatus().name(),
+                    order.getShippingAddress(),
+                    itemDtos);
+        }).toList();
+    }
+
 }
