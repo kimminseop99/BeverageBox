@@ -1,11 +1,13 @@
 package com.beverage.BeverageBox.service;
 
 import com.beverage.BeverageBox.dto.request.BeverageRequestDto;
+import com.beverage.BeverageBox.dto.request.BeverageSearchCondition;
 import com.beverage.BeverageBox.dto.response.BeverageResponseDto;
 import com.beverage.BeverageBox.entity.Beverage;
 import com.beverage.BeverageBox.repository.BeverageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,4 +49,22 @@ public class BeverageService {
                 b.getImageUrl()
         );
     }
+
+    @Transactional(readOnly = true)
+    public List<BeverageResponseDto> searchBeverages(BeverageSearchCondition condition) {
+        List<Beverage> beverages = beverageRepository.searchWithCondition(condition);
+
+        return beverages.stream()
+                .map(b -> new BeverageResponseDto(
+                        b.getId(),
+                        b.getName(),
+                        b.getDescription(),
+                        b.getPrice(),
+                        b.getStock(),
+                        b.getImageUrl()
+                ))
+                .toList();
+    }
+
+
 }
