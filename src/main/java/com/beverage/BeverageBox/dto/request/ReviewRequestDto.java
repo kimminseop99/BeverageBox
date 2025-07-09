@@ -1,15 +1,19 @@
 package com.beverage.BeverageBox.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 public class ReviewRequestDto {
+    @NotNull(message = "상품 아이디는 필수입니다.")
     private Long beverageId;
-    private String content;
-    private int rating; // 1~5
-}
 
+    @NotBlank(message = "리뷰 내용은 필수입니다.")
+    private String content;
+
+    @NotNull(message = "평점은 필수입니다.")
+    private Integer rating;  // 1~5점 등 숫자 평점
+}

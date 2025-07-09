@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    List<Review> findByBeverage(Beverage beverage);
-    Optional<Review> findByUserAndBeverage(User user, Beverage beverage);
+    boolean existsByUserAndBeverage(User user, Beverage beverage);
+    List<Review> findAllByBeverageOrderByCreatedAtDesc(Beverage beverage);
 }
