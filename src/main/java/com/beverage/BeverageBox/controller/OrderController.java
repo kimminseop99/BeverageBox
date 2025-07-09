@@ -5,6 +5,7 @@ import com.beverage.BeverageBox.dto.response.OrderResponseDto;
 import com.beverage.BeverageBox.service.OrderService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class OrderController {
 
     // 주문 생성 (장바구니 기반)
     @PostMapping
-    public void createOrder(@RequestBody OrderRequestDto dto, HttpSession session) {
+    public void createOrder(@Valid @RequestBody OrderRequestDto dto, HttpSession session) {
         Long userId = getSessionUserId(session);
         orderService.createOrder(userId, dto);
     }

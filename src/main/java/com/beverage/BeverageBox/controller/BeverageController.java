@@ -3,6 +3,7 @@ package com.beverage.BeverageBox.controller;
 import com.beverage.BeverageBox.dto.request.BeverageRequestDto;
 import com.beverage.BeverageBox.dto.response.BeverageResponseDto;
 import com.beverage.BeverageBox.service.BeverageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class BeverageController {
     private final BeverageService beverageService;
 
     @PostMapping
-    public BeverageResponseDto create(@RequestBody BeverageRequestDto dto) {
+    public BeverageResponseDto create(@Valid @RequestBody BeverageRequestDto dto) {
         return beverageService.create(dto);
     }
 

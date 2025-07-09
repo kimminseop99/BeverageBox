@@ -4,6 +4,7 @@ import com.beverage.BeverageBox.dto.request.CartItemRequestDto;
 import com.beverage.BeverageBox.dto.response.CartItemResponseDto;
 import com.beverage.BeverageBox.service.CartItemService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class CartItemController {
 
     // ✅ 장바구니 담기
     @PostMapping
-    public void addToCart(@RequestBody CartItemRequestDto dto, HttpSession session) {
+    public void addToCart(@Valid @RequestBody CartItemRequestDto dto, HttpSession session) {
         Long userId = getSessionUserId(session);
         cartItemService.addToCart(userId, dto);
     }

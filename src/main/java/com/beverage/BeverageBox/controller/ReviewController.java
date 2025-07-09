@@ -5,6 +5,7 @@ import com.beverage.BeverageBox.dto.response.ReviewResponseDto;
 import com.beverage.BeverageBox.service.ReviewService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ReviewResponseDto createReview(@RequestBody ReviewRequestDto dto, HttpSession session) {
+    public ReviewResponseDto createReview(@Valid @RequestBody ReviewRequestDto dto, HttpSession session) {
         Long userId = getSessionUserId(session);
         return reviewService.createReview(userId, dto);
     }
@@ -38,7 +39,7 @@ public class ReviewController {
 
     @PutMapping("/{reviewId}")
     public ReviewResponseDto updateReview(@PathVariable Long reviewId,
-                                          @RequestBody ReviewRequestDto dto,
+                                          @Valid @RequestBody ReviewRequestDto dto,
                                           HttpSession session) {
         Long userId = getSessionUserId(session);
         return reviewService.updateReview(userId, reviewId, dto);
